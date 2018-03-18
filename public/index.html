@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Knitting Pattern Tracker</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Projects</h1>
+        <div class="controls">
+            <button v-on:click="showCurrent()">Show Current Patterns</button>
+            <button v-on:click="showAll()">Show All Patterns</button>
+            <button v-on:click="addProjectForm()">Add New Project</button>
+        </div>
+	<h2 v-show="show==='edit'">{{name}}</h2>
+        <form v-show="show=== 'addPattern'" v-on:submit.prevent="addNewPattern()">
+            <input type="text" v-model="name">
+            <button type="submit">Add Pattern</button> 
+        </form>
+        <form v-show="show=== 'edit'" v-on:submit.prevent="addRow()">
+            <input type="text" v-model="content">
+            <button type="submit">Add Row</button>
+        </form>
+        <ul>
+            <li v-for="item in filteredPatterns" draggable="false" v-on:dragstart="dragPattern(item)" v-on:dragover.prevent v-on:drop="dropPattern(item)">
+                {{ item.name }}
+                <button v-on:click="editPattern(item)" class="edit">Edit</button>
+                <button v-on:click="startPattern(item)" class="start">Start</button>
+                <button v-on:click="deletePattern(item)" class="delete">X</button>
+            </li>
+        </ul>
+        <button class="controls" v-show="show==='patternID'" v-on:click="nextRow()">Row Finished</button>
+        <button class="controls" v-show="show==='patternID'" v-on:click="showAll()">Back</button>
+	<p v-show="show==='done'">Congratulations! You've finished the Pattern!</p>
+        <ul>
+          <li v-for="row in filteredRows" draggable="false" v-on:dragstart="dragRow(item)" v-on:dragover.prevent v-on:drop="dropPattern(item)">
+            {{row}}
+            <button v-show="show==='edit'" v-on:click="deleteRow(row)">X</button>
+        </ul>
+	<button v-show="show==='edit'" v-on:click="showAll()">Finish</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js" integrity="sha256-pU9euBaEcVl8Gtg+FRYCtin2vKLN8sx5/4npZDmY2VA=" crossorigin="anonymous"></script>
+    <script src="/script.js"></script>
+</body>
+<footer>
+    <p><a href="https://github.com/BYU-CS260-Winter-2018/lab-4-cameronconradt">Repository</a></p>
+</footer>
+
+</html>
